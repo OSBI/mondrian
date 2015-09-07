@@ -9,18 +9,12 @@
 */
 package mondrian.spi;
 
-import mondrian.rolap.SqlStatement;
-
 import java.math.BigDecimal;
-
-import java.sql.Date;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Timestamp;
-
+import java.sql.*;
 import java.util.List;
 import java.util.Map;
+
+import mondrian.rolap.SqlStatement;
 
 /**
  * Description of an SQL dialect.
@@ -966,7 +960,8 @@ public interface Dialect {
         SYBASE,
         TERADATA,
         VERTICA,
-        VECTORWISE;
+        VECTORWISE,
+        SPARKSQL;
 
         /**
          * Return the root of the family of products this database product
