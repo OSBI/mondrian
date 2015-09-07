@@ -10,10 +10,12 @@
 */
 package mondrian.rolap;
 
-import mondrian.olap.*;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import mondrian.olap.Exp;
+import mondrian.olap.FunDef;
+import mondrian.olap.NativeEvaluator;
 
 /**
  * Composite of {@link RolapNative}s. Uses chain of responsibility
@@ -32,6 +34,7 @@ public class RolapNativeRegistry extends RolapNative {
          */
         register("NonEmptyCrossJoin".toUpperCase(), new RolapNativeCrossJoin());
         register("CrossJoin".toUpperCase(), new RolapNativeCrossJoin());
+        register("*", new RolapNativeCrossJoin());
         register("TopCount".toUpperCase(), new RolapNativeTopCount());
         register("Filter".toUpperCase(), new RolapNativeFilter());
     }

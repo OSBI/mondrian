@@ -312,7 +312,7 @@ public class CrossJoinArgFactory {
     {
         // is this "CrossJoin([A].children, [B].children)"
         if (!"Crossjoin".equalsIgnoreCase(fun.getName())
-            && !"NonEmptyCrossJoin".equalsIgnoreCase(fun.getName()))
+            && !"NonEmptyCrossJoin".equalsIgnoreCase(fun.getName()) && !"*".equalsIgnoreCase(fun.getName()))
         {
             return null;
         }
