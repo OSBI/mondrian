@@ -44,7 +44,8 @@ public class Larders {
             name,
             caption,
             description,
-            Collections.<Resource>emptyList());
+            Collections.<Resource>emptyList(),
+            Locale.getDefault());
     }
 
     public static Larder create(
@@ -55,7 +56,7 @@ public class Larders {
     {
         return create(
             annotations, name, caption, description,
-            Collections.<Resource>emptyList());
+            Collections.<Resource>emptyList(), Locale.getDefault());
     }
 
     public static Larder create(
@@ -63,7 +64,8 @@ public class Larders {
         String name,
         String caption,
         String description,
-        List<Resource> resources)
+        List<Resource> resources,
+        Locale locale)
     {
         if (annotations == null) {
             annotations = Olap4jUtil.emptyNamedList();
@@ -89,8 +91,8 @@ public class Larders {
         default:
             final LarderBuilder builder = new LarderBuilder();
             builder.addAll(annotations);
-            builder.caption(caption);
-            builder.description(description);
+            builder.caption(caption, locale);
+            builder.description(description, locale);
             builder.addAll(resources);
             return builder.build();
         }
@@ -579,16 +581,26 @@ public class Larders {
             }
         }
 
-        public LarderBuilder caption(String caption) {
+        public LarderBuilder caption(String caption, Locale locale) {
             if (caption != null) {
-                add(DEFAULT_LOCALE_CAPTION, caption);
+                if(locale == null){
+                    add(DEFAULT_LOCALE_CAPTION, caption);
+                } else{
+                    LocaleProp localeProp = new LocaleProp(locale,LocalizedProperty.CAPTION);
+                    add(localeProp, caption);
+                }
             }
             return this;
         }
 
-        public LarderBuilder description(String description) {
+        public LarderBuilder description(String description,Locale locale) {
             if (description != null) {
-                add(DEFAULT_LOCALE_DESCRIPTION, description);
+                if(locale == null){
+                    add(DEFAULT_LOCALE_DESCRIPTION, description);
+                } else{
+                    LocaleProp localeProp = new LocaleProp(locale,LocalizedProperty.DESCRIPTION);
+                    add(localeProp, description);
+                }
             }
             return this;
         }
