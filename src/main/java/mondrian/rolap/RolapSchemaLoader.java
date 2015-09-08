@@ -1973,7 +1973,8 @@ public class RolapSchemaLoader {
                     name,
                     caption,
                     description,
-                    tag != null ? resourceMap.get(tag) : null));
+                    tag != null ? resourceMap.get(tag) : null,
+                    schema.getInternalConnection().getLocale()));
     }
 
     private List<RolapMember> nonSystemMeasures() {
