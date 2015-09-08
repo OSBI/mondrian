@@ -581,6 +581,10 @@ public class Larders {
             }
         }
 
+        public LarderBuilder caption(String caption){
+            return this.caption(caption,Locale.getDefault());
+        }
+
         public LarderBuilder caption(String caption, Locale locale) {
             if (caption != null) {
                 if(locale == null){
@@ -591,6 +595,10 @@ public class Larders {
                 }
             }
             return this;
+        }
+
+        public LarderBuilder description(String description){
+            return this.description(description,Locale.getDefault());
         }
 
         public LarderBuilder description(String description,Locale locale) {
