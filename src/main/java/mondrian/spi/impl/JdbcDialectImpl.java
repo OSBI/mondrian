@@ -158,8 +158,8 @@ public class JdbcDialectImpl implements Dialect {
             Pattern.compile(
                 "[A-Za-z0-9_" + metaData.getExtraNameCharacters() + "]*");
 
-        // for future use
-        boolean supportsMixedCaseQuotedIdentifiers =
+        // for future use -- Commented out for patch to unbreak spark.
+        /*boolean supportsMixedCaseQuotedIdentifiers =
             metaData.supportsMixedCaseQuotedIdentifiers();
         boolean supportsMixedCaseUnquotedIdentifiers =
             metaData.supportsMixedCaseIdentifiers();
@@ -172,7 +172,9 @@ public class JdbcDialectImpl implements Dialect {
             metaData.storesUpperCaseIdentifiers() ? Case.UPPER
                 : metaData.storesLowerCaseIdentifiers() ? Case.LOWER
                 : metaData.storesMixedCaseIdentifiers() ? Case.MIXED
-                : Case.UNKNOWN;
+                : Case.UNKNOWN;*/
+
+
     }
 
     public JdbcDialectImpl() {
