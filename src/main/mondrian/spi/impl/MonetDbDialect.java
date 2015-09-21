@@ -46,33 +46,38 @@ public class MonetDbDialect extends JdbcDialectImpl {
     }
 
     @Override
-    public boolean allowsMultipleDistinctSqlMeasures() {
-        return false;
-    }
-
-    @Override
-    public boolean allowsCountDistinct() {
-        return false;
-    }
-
-    @Override
     public boolean requiresAliasForFromQuery() {
         return true;
     }
 
     @Override
-    public boolean allowsCompoundCountDistinct() {
+    public boolean allowsSelectNotInGroupBy() {
         return false;
     }
 
     @Override
-    public boolean supportsGroupByExpressions() {
-        return false;
+    public boolean allowsJoinOn() {
+        return true;
+    }
+
+    @Override
+    public boolean requiresGroupByAlias() {
+        return true;
+    }
+
+    @Override
+    public boolean requiresOrderByAlias() {
+        return true;
+    }
+
+    @Override
+    public boolean requiresHavingAlias() {
+        return true;
     }
 
     @Override
     public void quoteStringLiteral(StringBuilder buf, String s) {
-        // Go beyond Util.singleQuoteString; also quote backslash, like MySQL.
+        // Go beyond Util.singleQuoteString; also quote backslash.
         buf.append('\'');
         String s0 = Util.replace(s, "'", "''");
         String s1 = Util.replace(s0, "\\", "\\\\");
