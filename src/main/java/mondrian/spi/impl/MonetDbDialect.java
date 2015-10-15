@@ -4,7 +4,7 @@
 // http://www.eclipse.org/legal/epl-v10.html.
 // You must accept the terms of that agreement to use this software.
 //
-// Copyright (C) 2012-2014 Pentaho
+// Copyright (C) 2012-2014 Pentaho and others
 // All Rights Reserved.
 */
 package mondrian.spi.impl;
@@ -46,17 +46,17 @@ public class MonetDbDialect extends JdbcDialectImpl {
     }
 
     @Override
-    public boolean allowsMultipleDistinctSqlMeasures() {
-        return false;
-    }
-
-    @Override
-    public boolean allowsCountDistinct() {
-        return false;
-    }
-
-    @Override
     public boolean requiresAliasForFromQuery() {
+        return true;
+    }
+
+    @Override
+    public boolean allowsSelectNotInGroupBy() {
+        return false;
+    }
+
+    @Override
+    public boolean allowsJoinOn() {
         return true;
     }
 
@@ -66,18 +66,18 @@ public class MonetDbDialect extends JdbcDialectImpl {
     }
 
     @Override
-    public boolean allowsCompoundCountDistinct() {
-        return false;
+    public boolean requiresOrderByAlias() {
+        return true;
     }
 
     @Override
-    public boolean supportsGroupByExpressions() {
-        return false;
+    public boolean requiresHavingAlias() {
+        return true;
     }
 
     @Override
     public void quoteStringLiteral(StringBuilder buf, String s) {
-        // Go beyond Util.singleQuoteString; also quote backslash, like MySQL.
+        // Go beyond Util.singleQuoteString; also quote backslash.
         buf.append('\'');
         String s0 = Util.replace(s, "'", "''");
         String s1 = Util.replace(s0, "\\", "\\\\");

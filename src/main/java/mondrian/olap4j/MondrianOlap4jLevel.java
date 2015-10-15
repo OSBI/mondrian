@@ -9,22 +9,21 @@
 */
 package mondrian.olap4j;
 
-import mondrian.olap.*;
-import mondrian.rolap.RolapConnection;
-import mondrian.rolap.RolapCubeLevel;
-import mondrian.server.Locus;
-
 import org.olap4j.OlapException;
 import org.olap4j.impl.ArrayNamedListImpl;
 import org.olap4j.impl.Named;
-import org.olap4j.metadata.Dimension;
-import org.olap4j.metadata.Hierarchy;
-import org.olap4j.metadata.Level;
-import org.olap4j.metadata.Member;
 import org.olap4j.metadata.*;
-import org.olap4j.metadata.Property;
 
-import java.util.*;
+import java.util.AbstractList;
+import java.util.Arrays;
+import java.util.List;
+
+import mondrian.olap.LocalizedProperty;
+import mondrian.olap.OlapElement;
+import mondrian.olap.Role;
+import mondrian.rolap.RolapConnection;
+import mondrian.rolap.RolapCubeLevel;
+import mondrian.server.Locus;
 
 /**
  * Implementation of {@link Level}
@@ -95,7 +94,7 @@ class MondrianOlap4jLevel
     }
 
     public NamedList<Property> getProperties() {
-        return getProperties(true);
+        return getProperties(false);
     }
 
     /**
