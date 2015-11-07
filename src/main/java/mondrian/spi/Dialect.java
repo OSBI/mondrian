@@ -952,6 +952,7 @@ public interface Dialect {
         NEOVIEW,
         NUODB,
         ORACLE,
+        KYLIN,
         PHOENIX,
         POSTGRESQL,
         REDSHIFT,

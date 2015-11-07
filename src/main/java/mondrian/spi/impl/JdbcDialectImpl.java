@@ -9,20 +9,35 @@
 */
 package mondrian.spi.impl;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 import mondrian.olap.MondrianProperties;
 import mondrian.olap.Util;
 import mondrian.rolap.SqlStatement;
 import mondrian.spi.Dialect;
 import mondrian.spi.StatisticsProvider;
 import mondrian.util.ClassResolver;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.sql.*;
-import java.sql.Date;
-import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * Implementation of {@link Dialect} based on a JDBC connection and metadata.
@@ -1069,7 +1084,10 @@ public class JdbcDialectImpl implements Dialect {
             return DatabaseProduct.INGRES;
         } else if (productName.equals("Interbase")) {
             return DatabaseProduct.INTERBASE;
-        } else if (upperProductName.equals("LUCIDDB")
+        } else if (upperProductName.equals("KYLIN")) {
+                        return DatabaseProduct.KYLIN;
+        }
+            else if (upperProductName.equals("LUCIDDB")
             || upperProductName.equals("OPTIQ"))
         {
             return DatabaseProduct.LUCIDDB;
