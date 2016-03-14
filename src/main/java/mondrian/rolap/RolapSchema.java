@@ -10,35 +10,87 @@
 */
 package mondrian.rolap;
 
-import mondrian.olap.*;
+import org.apache.log4j.Logger;
+
+import org.eigenbase.xom.ElementDef;
+import org.eigenbase.xom.Location;
+import org.eigenbase.xom.NodeDef;
+import org.olap4j.impl.NamedListImpl;
+import org.olap4j.impl.UnmodifiableArrayList;
+import org.olap4j.mdx.IdentifierSegment;
+import org.olap4j.metadata.NamedList;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+import javax.sql.DataSource;
+
+import mondrian.olap.CacheControl;
+import mondrian.olap.Cube;
+import mondrian.olap.Dimension;
+import mondrian.olap.FunTable;
+import mondrian.olap.Hierarchy;
+import mondrian.olap.Id;
+import mondrian.olap.Larder;
+import mondrian.olap.Larders;
+import mondrian.olap.LocalizedProperty;
+import mondrian.olap.MatchType;
 import mondrian.olap.Member;
+import mondrian.olap.MondrianDef;
+import mondrian.olap.MondrianProperties;
+import mondrian.olap.MondrianServer;
+import mondrian.olap.NamedSet;
+import mondrian.olap.OlapElement;
+import mondrian.olap.OlapElementBase;
 import mondrian.olap.Parameter;
-import mondrian.olap.fun.*;
+import mondrian.olap.Role;
+import mondrian.olap.RoleImpl;
+import mondrian.olap.Schema;
+import mondrian.olap.SchemaReader;
+import mondrian.olap.Syntax;
+import mondrian.olap.Util;
+import mondrian.olap.fun.FunTableImpl;
+import mondrian.olap.fun.GlobalFunTable;
+import mondrian.olap.fun.Resolver;
+import mondrian.olap.fun.UdfResolver;
 import mondrian.olap.type.Type;
 import mondrian.resource.MondrianResource;
 import mondrian.rolap.aggmatcher.AggTableManager;
 import mondrian.rolap.aggmatcher.JdbcSchema;
-import mondrian.rolap.sql.*;
-import mondrian.server.*;
+import mondrian.rolap.sql.SqlQuery;
+import mondrian.rolap.sql.SqlQueryBuilder;
+import mondrian.server.Execution;
 import mondrian.server.Statement;
-import mondrian.spi.*;
-import mondrian.spi.impl.*;
-import mondrian.util.*;
-
-import org.apache.log4j.Logger;
-
-import org.eigenbase.xom.*;
-
-import org.olap4j.impl.*;
-import org.olap4j.mdx.IdentifierSegment;
-import org.olap4j.metadata.NamedList;
-
-import java.lang.reflect.*;
-import java.sql.*;
-import java.util.*;
-import java.util.Date;
-
-import javax.sql.DataSource;
+import mondrian.spi.DataServicesLocator;
+import mondrian.spi.DataServicesProvider;
+import mondrian.spi.Dialect;
+import mondrian.spi.DialectManager;
+import mondrian.spi.RoleGenerator;
+import mondrian.spi.StatisticsProvider;
+import mondrian.spi.UserDefinedFunction;
+import mondrian.spi.impl.Scripts;
+import mondrian.util.ByteString;
+import mondrian.util.ClassResolver;
+import mondrian.util.DirectedGraph;
+import mondrian.util.Pair;
 
 /**
  * A <code>RolapSchema</code> is a collection of {@link RolapCube}s and
@@ -1019,7 +1071,7 @@ public class RolapSchema extends OlapElementBase implements Schema {
                 final List<ColumnInfo> columnInfoList =
                     new ArrayList<ColumnInfo>();
                 for (int i = 0; i < columnCount; i++) {
-                    final String columnName =  metaData.getColumnName(i + 1);
+                    final String columnName =  metaData.getColumnLabel(i + 1);
                     final String typeName = metaData.getColumnTypeName(i + 1);
                     final int type = metaData.getColumnType(i + 1);
                     // REVIEW: We want the physical size of the column in bytes.
