@@ -9,11 +9,16 @@
 */
 package mondrian.udf;
 
+import org.apache.log4j.Logger;
+
 import mondrian.olap.*;
 import mondrian.olap.type.*;
+import mondrian.rolap.RolapSchema;
 import mondrian.spi.UserDefinedFunction;
 import mondrian.util.Format;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.*;
 
 /**
@@ -37,6 +42,7 @@ import java.util.*;
  */
 public class CurrentDateMemberUdf implements UserDefinedFunction {
     private Object resultDateMember = null;
+    private static final Logger LOGGER = Logger.getLogger(CurrentDateMemberUdf.class);
 
     public Object execute(Evaluator evaluator, Argument[] arguments) {
         if (resultDateMember != null) {
@@ -59,14 +65,22 @@ public class CurrentDateMemberUdf implements UserDefinedFunction {
             matchType = MatchType.EXACT;
         }
 
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Current Date Member Lookup, attempting to find:" + currDateStr);
+        }
         List<Id.Segment> uniqueNames = Util.parseIdentifier(currDateStr);
         resultDateMember =
             evaluator.getSchemaReader().getMemberByUniqueName(
                 uniqueNames, false, matchType);
         if (resultDateMember != null) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Current Date Member Lookup, found:" + ((Member)resultDateMember).getUniqueName());
+            }
             return resultDateMember;
         }
-
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Failed to match Current Date Member");
+        }
         // if there is no matching member, return the null member for
         // the specified dimension/hierarchy
         Object arg0 = arguments[0].evaluate(evaluator);
