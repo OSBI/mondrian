@@ -6,7 +6,7 @@
   <groupId>pentaho</groupId>
   <artifactId>mondrian</artifactId>
   <packaging>jar</packaging>
-  <version>4.3.0.1.1-SPARK</version>
+  <version>4.3.0.1.2-SPARK</version>
 
   <!-- More project information. -->
   <name>mondrian</name>
