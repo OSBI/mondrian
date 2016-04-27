@@ -397,7 +397,7 @@ public class RolapMemberBase
     }
 
     public int hashCode() {
-        return getUniqueName().hashCode();
+        return (getKey().toString() + getUniqueName()).hashCode();
     }
 
     public boolean equals(Object o) {
@@ -415,7 +415,7 @@ public class RolapMemberBase
         assert that != null; // public method should have checked
         // Do not use equalsIgnoreCase; unique names should be identical, and
         // hashCode assumes this.
-        return this.getUniqueName().equals(that.getUniqueName());
+        return this.getUniqueName().equals(that.getUniqueName()) && this.getKey().equals(that.getKey());
     }
 
     /** Call this very sparingly. */
